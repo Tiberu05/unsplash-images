@@ -1,0 +1,23 @@
+@media only screen and (min-width: 1201px) {
+    .ui.form {
+        width: 50% !important;
+    }
+}
+
+.ui.form {
+    top: 50px;
+    width: 90%;
+    margin: 0 auto;
+    font-size: 27px;
+    position: relative;
+    margin-bottom: 75px;
+    
+}
+
+input {
+    margin: 0 auto;
+    text-align: center;
+    height: 50px;
+    border-radius: 50%;
+}
+

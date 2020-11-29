@@ -1,0 +1,37 @@
+@media only screen and (min-width: 1201px) {
+    .image-list {
+        position: relative;
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+        grid-gap: 0 0 !important;
+        grid-auto-rows: 10px !important;
+        padding-bottom: 30px !important;
+    }
+}
+
+html {
+    overflow-y: scroll;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.image-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 30px;
+    
+}
+
+.image-list img {
+    width: 280px;
+}
