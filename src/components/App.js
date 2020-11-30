@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import unsplash from '../api/unsplash';
+import ls from 'local-storage';
 
 import HomePage from './HomePage';
 import SearchBar from './SearchBar';
@@ -14,14 +15,19 @@ const App = () => {
     const [images, setImages] = useState([]);
     const [favourites, setFavourites] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [searchHistory, setSearchHistory] = useState([]);
 
     const [img, setImg] = useState(null);
     const [url, setUrl] = useState(null);
 
     useEffect(() => {
-        console.log(images);
-        console.log(favourites);
-    }, [favourites])
+        searchHistory.reverse();
+    }, [searchHistory])
+
+    useEffect(() => {
+        setFavourites(ls.get('favourite-photos') || []);
+        setSearchHistory(ls.get('search-history') || []);
+    }, []);
     
     
     const onSearchSubmit = async (term) => {
@@ -57,12 +63,26 @@ const App = () => {
         index === -1 ? currentFavourites.push(image) : alert('Image already added to favourites');
         
         setFavourites(currentFavourites);
+        ls.set('favourite-photos', currentFavourites);
     }
 
     const removeFavourite = image => {
         const nextFavourites = favourites.filter(el => el.id !== image.id);
 
         setFavourites(nextFavourites);
+        ls.set('favourite-photos', nextFavourites);
+    }
+
+    const addToSearchHistory = (searchTerm) => {
+        const currentSearchHistory = searchHistory.map(el => el);
+        currentSearchHistory.push(searchTerm);
+        setSearchHistory(currentSearchHistory);
+        ls.set('search-history', currentSearchHistory);
+    }
+
+    const clearHistory = () => {
+        setSearchHistory([]);
+        ls.set('search-history', []);
     }
         
 
@@ -75,7 +95,12 @@ const App = () => {
                 <SearchBar 
                     onSubmit={onSearchSubmit} 
                     favouritesNumber={favourites.length}
+                    addToSearchHistory={addToSearchHistory}
+                    searchHistory={searchHistory}
+                    clearHistory={clearHistory}
                 />
+
+                <div className='divider'></div>
 
                 <Switch>
                 
