@@ -1,6 +1,8 @@
 .home-page {
     position: relative;
     height: auto;
+    top: 20px;
     width: 100%;
     overflow-x: hidden;
+    color: grey;
 }

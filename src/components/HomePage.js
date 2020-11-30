@@ -10,15 +10,20 @@ const HomePage = props => {
 
     return (
         <div className='home-page'>
-            {/* <SearchBar 
-                onSubmit={props.onSubmit} 
-                favouritesNumber={props.favouritesNumber}
-            /> */}
+
+            <div className='page-title'>
+            {
+                props.searchInput ? <h2>You searched for '{props.searchInput}' images</h2> : null
+            }
+            </div>
+            
             <ImageList 
                 images={props.images} 
                 handleImage={props.handleImage} 
                 handleUrl={props.handleUrl} 
-                openModal={() => props.openModal()} 
+                openModal={() => props.openModal()}
+                favouritesList={false}
+                favourites={props.favourites}
             />
         </div>
     )

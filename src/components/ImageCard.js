@@ -15,8 +15,13 @@ const ImageCard = props => {
     }, [])
 
     const setSpan = () => {
-        const height = imageRef.current.clientHeight;
+        
+        let height;
 
+        if (imageRef.current) {
+            height = imageRef.current.clientHeight;
+        }
+        
         const spans = Math.floor(height / 10 + 0.9);
 
         setSpans(spans);
@@ -26,7 +31,7 @@ const ImageCard = props => {
     const { description, urls, links } = props.image;
 
     return (
-        <div style={{ gridRowEnd: `span ${spans}`}} >
+        <div className='row-card' style={{ gridRowEnd: `span ${spans}`}} >
                 <img 
                     className='image-card'
                     ref={imageRef}
@@ -38,6 +43,17 @@ const ImageCard = props => {
                         props.openModal();
                     }}
                 />
+                {   
+                    !props.favouritesList ? (
+                        props.favourites.map(el => {
+                            return el.id === props.image.id ? <i className="star icon"></i> : null
+                        })
+                    ) : (
+                        <i className="star icon"></i>
+                    )
+                   
+                }
+                
         </div>
     );
 }

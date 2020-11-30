@@ -12,6 +12,8 @@ const SearchBar = props => {
 
     const onSubmitForm = (event) => {
         event.preventDefault();
+
+        props.getSearchInput(searchInput);
         
         props.addToSearchHistory(searchInput);
         
@@ -24,6 +26,7 @@ const SearchBar = props => {
         const index = props.searchHistory.indexOf(searchInput);
         if (index !== -1) {
             props.onSubmit(searchInput);
+            props.getSearchInput(searchInput);
             props.history.push('/');
         }
     }, [searchInput])
@@ -64,8 +67,8 @@ const SearchBar = props => {
                 Search history:{'\u00A0'}
                 <div className='search-history-items'>
                     {
-                        props.searchHistory.slice(0, 10).map(el => {
-                            return <div className='search-item' onClick={() => setSearchInput(el)}> {el}{'\u00A0'}</div>
+                        props.searchHistory.slice(0, 10).map((el, index) => {
+                            return <div key={index} className='search-item' onClick={() => setSearchInput(el)}> {el}{'\u00A0'}</div>
                             
                         })
                     }

@@ -17,6 +17,8 @@ const App = () => {
     const [showModal, setShowModal] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);
 
+    const [searchTerm, setSearchTerm] = useState('');
+
     const [img, setImg] = useState(null);
     const [url, setUrl] = useState(null);
 
@@ -28,18 +30,26 @@ const App = () => {
         setFavourites(ls.get('favourite-photos') || []);
         setSearchHistory(ls.get('search-history') || []);
     }, []);
+
+    useEffect(() => {
+        console.log(searchTerm);
+    }, [searchTerm])
     
     
     const onSearchSubmit = async (term) => {
 
-        const result = await unsplash.get(`/search/photos?per_page=5`, {
+        const result = await unsplash.get(`/search/photos?per_page=25`, {
                 params: { query: term }
         });
 
         setImages(result.data.results);
         console.log(images);
     
-    }    
+    }  
+    
+    const getSearchInput = term => {
+        setSearchTerm(term);
+    }
 
     const openModal = () => {
         setShowModal(true);
@@ -59,7 +69,7 @@ const App = () => {
 
     const addFavourite = image => {
         const currentFavourites = favourites.map(el => el);
-        const index = currentFavourites.indexOf(image);
+        const index = currentFavourites.map(el=> el.id).indexOf(image.id);
         index === -1 ? currentFavourites.push(image) : alert('Image already added to favourites');
         
         setFavourites(currentFavourites);
@@ -98,6 +108,7 @@ const App = () => {
                     addToSearchHistory={addToSearchHistory}
                     searchHistory={searchHistory}
                     clearHistory={clearHistory}
+                    getSearchInput={getSearchInput}
                 />
 
                 <div className='divider'></div>
@@ -110,6 +121,9 @@ const App = () => {
                         images={images} handleUrl={handleUrl} 
                         handleImage={handleImage} 
                         openModal={() => openModal()}
+                        searchInput={searchTerm}
+                        favourites={favourites}
+                        
                     />
                 }} />
 

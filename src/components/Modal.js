@@ -12,7 +12,7 @@ const Modal = (props) => {
     })
 
     const checkExistingFavourite = () => {
-        const index = props.favourites.indexOf(props.image);
+        const index = props.favourites.map(el => el.id).indexOf(props.image.id);
         if (index === -1) {
             return false;
         } else {

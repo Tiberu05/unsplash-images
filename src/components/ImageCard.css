@@ -1,3 +1,14 @@
 .image-card:hover {
     cursor: pointer;
 }
+
+.row-card {
+    position: relative;
+}
+
+.star.icon {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    color: rgba(241, 241, 12, 0.87);
+}
