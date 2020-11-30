@@ -1,19 +1,13 @@
 import React from 'react';
 
-import './HomePage.css';
+import './FavouritesPage.css';
 
-import SearchBar from './SearchBar';
 import ImageList from './ImageList';
 
-const HomePage = props => {
-
+const FavouritesPage = props => {
 
     return (
-        <div className='home-page'>
-            {/* <SearchBar 
-                onSubmit={props.onSubmit} 
-                favouritesNumber={props.favouritesNumber}
-            /> */}
+        <div className='favourites-page'>
             <ImageList 
                 images={props.images} 
                 handleImage={props.handleImage} 
@@ -24,4 +18,4 @@ const HomePage = props => {
     )
 };
 
-export default HomePage;
+export default FavouritesPage;

@@ -23,9 +23,7 @@ const ImageCard = props => {
     }
 
 
-    const { description, urls } = props.image;
-
-    console.log(props.image);
+    const { description, urls, links } = props.image;
 
     return (
         <div style={{ gridRowEnd: `span ${spans}`}} >
@@ -35,7 +33,8 @@ const ImageCard = props => {
                     alt={description} 
                     src={urls.small}
                     onClick={() => {
-                        props.handleImage(urls.full);
+                        props.handleImage(props.image);
+                        props.handleUrl(links.html);
                         props.openModal();
                     }}
                 />

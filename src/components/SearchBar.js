@@ -1,32 +1,62 @@
+import React, { useState } from 'react';
 import './SearchBar.css';
-import React from 'react';
+import { withRouter, useLocation } from 'react-router-dom';
 
 
-class SearchBar extends React.Component {
 
-    state = { searchInput: '' };
+const SearchBar = props => {
 
-    onSubmitForm = (event) => {
+    const [searchInput, setSearchInput] = useState('');
+
+    const location = useLocation();
+
+    const onSubmitForm = (event) => {
         event.preventDefault();
         
-        this.props.onSubmit(this.state.searchInput);
+        props.onSubmit(searchInput);
     }
     
-    render() {
-        return (
-                <form onSubmit={this.onSubmitForm} className='ui form'>
-                    <div className='field'>
-                        <input 
-                            type='text'
-                            value={this.state.searchInput}
-                            onChange={e => this.setState({ searchInput: e.target.value })}
-                            placeholder='Search for images'
-                        />
+    return (
+        <div className='search-bar'>
+
+            {
+                location.pathname === '/' ? (
+                    <form onSubmit={onSubmitForm} className='search-form'>
+
+                        <div className='ui input'>
+        
+                            <input 
+                                type='text'
+                                value={searchInput}
+                                onChange={e => setSearchInput(e.target.value)}
+                                placeholder='Search for unsplash images'
+                            />
+                        </div>
+                    
+                    </form>
+                ) : (
+                    <div className='search-form'>
+
+                        <div className='return-link' onClick={() => props.history.push('/')}>
+                            Return to search
+                        </div>
+
                     </div>
-                </form>
-        )
-    }
+                )
+            }
+
+           
+
+            <div className='favourites' onClick={() => props.history.push('/favourites')}>
+                <span className='favourites-text'>Favourites</span>
+                <i class="circle outline icon"><span className='number'>{props.favouritesNumber}</span></i>
+            </div>
+
+        </div>
+        
+    )
+    
 
 }
 
-export default SearchBar;
+export default withRouter(SearchBar);

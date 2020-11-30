@@ -11,7 +11,14 @@ const Modal = (props) => {
         props.closeModal();
     })
 
-    console.log(props);
+    const checkExistingFavourite = () => {
+        const index = props.favourites.indexOf(props.image);
+        if (index === -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     if (!props.open) return null;
 
@@ -20,8 +27,20 @@ const Modal = (props) => {
 
             <div className='modal-buttons'>
                 <button className='unsplash-button'>
-                    <a className='modal-link' href={props.imgUrl} target='_blank'> Buy from UNSPLASH</a>
+                    <a className='modal-link' href={props.url} target='_blank'> Buy from UNSPLASH</a>
                 </button>
+                {
+                    !checkExistingFavourite() ? (
+                        <button className='favourites-button' onClick={() => props.addFavourite(props.image)}>
+                            Add to favourites
+                        </button>
+                    ) : (
+                        <button className='favourites-button' onClick={() => props.removeFavourite(props.image)}>
+                            Remove from favourites
+                        </button>
+                    )
+                }
+                
             </div>
 
             <div className='modal'>
