@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './SearchBar.css';
 import { withRouter, useLocation } from 'react-router-dom';
 
+import ToggleButton from './ToggleButton';
+
 
 
 const SearchBar = props => {
@@ -35,6 +37,24 @@ const SearchBar = props => {
         <div className='search-bar'>
 
             {
+                props.theme === 'light' ? (
+                    <div className='theme-select'>
+                        <span>Set Dark Theme</span>
+                        <i className="toggle off icon theme-button" style={{ fontSize: '2rem'}} onClick={props.themeToggler} ></i> 
+                    </div>
+
+                    ) : (
+
+                    <div className='theme-select'>
+                        <span>Set Light Theme</span>
+                        <i className="toggle on icon theme-button" style={{ fontSize: '2rem'}} onClick={props.themeToggler} ></i> 
+                    </div>
+                    )
+
+            }
+
+            
+            {
                 location.pathname === '/' ? (
                     <form onSubmit={onSubmitForm} className='search-form'>
 
@@ -45,6 +65,7 @@ const SearchBar = props => {
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
                                 placeholder='Search for unsplash images'
+                                style={ props.theme === 'light' ? {backgroundColor: 'white', color: 'grey'} : {backgroundColor: 'rgb(49, 47, 47)', color: 'white'}}
                             />
                         </div>
 

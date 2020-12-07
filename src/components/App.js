@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import unsplash from '../api/unsplash';
 import ls from 'local-storage';
 
+import { ThemeProvider } from "styled-components";
+import { GlobalStyles } from "./GlobalStyles";
+import { lightTheme, darkTheme } from "./Theme";
+
 import HomePage from './HomePage';
 import SearchBar from './SearchBar';
 import FavouritesPage from './FavouritesPage';
@@ -16,6 +20,7 @@ const App = () => {
     const [favourites, setFavourites] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [searchHistory, setSearchHistory] = useState([]);
+    const [theme, setTheme] = useState('light');
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -34,6 +39,11 @@ const App = () => {
     useEffect(() => {
         console.log(searchTerm);
     }, [searchTerm])
+
+
+    const themeToggler = () => {
+        theme === 'light' ? setTheme('dark') : setTheme('light')
+    }
     
     
     const onSearchSubmit = async (term) => {
@@ -98,58 +108,67 @@ const App = () => {
 
     return (
 
-        <Router>
+        <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
 
-            <div className='ui container'>
+            <GlobalStyles></GlobalStyles>
 
-                <SearchBar 
-                    onSubmit={onSearchSubmit} 
-                    favouritesNumber={favourites.length}
-                    addToSearchHistory={addToSearchHistory}
-                    searchHistory={searchHistory}
-                    clearHistory={clearHistory}
-                    getSearchInput={getSearchInput}
-                />
+            <Router>
 
-                <div className='divider'></div>
+                <div className='ui container'>
 
-                <Switch>
-                
-                <Route exact path='/' component={() => {
-                    return <HomePage 
+                    <SearchBar 
                         onSubmit={onSearchSubmit} 
-                        images={images} handleUrl={handleUrl} 
-                        handleImage={handleImage} 
-                        openModal={() => openModal()}
-                        searchInput={searchTerm}
-                        favourites={favourites}
+                        favouritesNumber={favourites.length}
+                        addToSearchHistory={addToSearchHistory}
+                        searchHistory={searchHistory}
+                        clearHistory={clearHistory}
+                        getSearchInput={getSearchInput}
+                        themeToggler={themeToggler}
+                        theme={theme}
+                    />
+
+                    <div className='divider'></div>
+
+                    <Switch>
+                    
+                    <Route exact path='/' component={() => {
+                        return <HomePage 
+                            onSubmit={onSearchSubmit} 
+                            images={images} handleUrl={handleUrl} 
+                            handleImage={handleImage} 
+                            openModal={() => openModal()}
+                            searchInput={searchTerm}
+                            favourites={favourites}
+                            
+                        />
+                    }} />
+
+                    <Route exact path='/favourites' component={() => {
+                        return <FavouritesPage 
+                            onSubmit={onSearchSubmit} 
+                            images={favourites} handleUrl={handleUrl} 
+                            handleImage={handleImage} 
+                            openModal={() => openModal()}
+                        />
+                    }} />
+                    
+
+                    </Switch>
+
+                    <Modal open={showModal} url={url} image={img} favourites={favourites} closeModal={closeModal} removeFavourite={removeFavourite} addFavourite={addFavourite}>
                         
-                    />
-                }} />
+                        {
+                            img ? <img src={img.urls.full} /> : null
+                        }
+                        
+                    </Modal>   
 
-                <Route exact path='/favourites' component={() => {
-                    return <FavouritesPage 
-                        onSubmit={onSearchSubmit} 
-                        images={favourites} handleUrl={handleUrl} 
-                        handleImage={handleImage} 
-                        openModal={() => openModal()}
-                    />
-                }} />
-                
+                </div>
 
-                </Switch>
+            </Router>
 
-                <Modal open={showModal} url={url} image={img} favourites={favourites} closeModal={closeModal} removeFavourite={removeFavourite} addFavourite={addFavourite}>
-                    
-                    {
-                        img ? <img src={img.urls.full} /> : null
-                    }
-                    
-                </Modal>   
+        </ThemeProvider>
 
-            </div>
-
-        </Router>
         
     );
     
